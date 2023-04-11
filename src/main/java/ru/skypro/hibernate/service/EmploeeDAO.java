@@ -4,7 +4,7 @@ import ru.skypro.hibernate.model.Employee;
 
 import java.util.List;
 
-public interface EmployeeDAO {
+interface EmployeeDAO {
     List<Employee> getAllEmployee();
 
     Employee getById(int id);
