@@ -24,13 +24,11 @@ public class EmployeeDaoImpl implements EmployeeDAO {
 
     @Override
     public void addEmployee(Employee employee) {
-        Integer id;
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            id = (Integer) session.save(employee);
+                    session.persist(employee);
             transaction.commit();
         }
-//        return id;
     }
 
     @Override

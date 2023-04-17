@@ -2,46 +2,48 @@ package ru.skypro.hibernate.model;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@AllArgsConstructor
+@org.hibernate.annotations.NamedQueries({
+        @org.hibernate.annotations.NamedQuery(name = "City_all",
+                query = "from City")
+})
 @NoArgsConstructor
-
-
-@EqualsAndHashCode(of = "city_id")
+@Setter
+@Getter
+@EqualsAndHashCode(of = "cityId")
+@Entity
+@Table(name = "city")
 public class City {
-
     @Id
+    @Column(name = "city_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    int cityId;
-    @Column(name = "city_name")
-    String cityName;
+    private Long cityId;
+    @Column(name = "city_name", length = 168, nullable = false)
+    private String cityName;
+    @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Employee> employeeList = new ArrayList<>();
 
-    public int getCityId() {
-        return cityId;
+    public City(String cityName) {
+        this.cityName = cityName;
     }
 
-    public void setCityId(int city_id) {
-        this.cityId = city_id;
+    public void addEmployee(Employee employee) {
+        employee.setCity(this);
+        employeeList.add(employee);
     }
 
-    public String getCityName() {
-        return cityName;
-    }
-
-    public void setCityName(String city_name) {
-        this.cityName = city_name;
+    public void removeEmployee(Employee employee) {
+        employee.setCity(null);
+        employeeList.remove(employee);
     }
 
     @Override
     public String toString() {
         return "City{" +
-                "cityId=" + cityId +
-                ", cityName='" + cityName + '\'' +
-                '}';
+                "cityId=" + getCityId() +
+                ", cityName='" + getCityName();
     }
 }
