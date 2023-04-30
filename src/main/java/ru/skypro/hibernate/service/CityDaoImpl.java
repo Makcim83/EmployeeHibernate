@@ -2,64 +2,63 @@ package ru.skypro.hibernate.service;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import ru.skypro.hibernate.model.Employee;
+import ru.skypro.hibernate.model.City;
 
 import java.util.List;
 
-public class EmployeeDaoImpl implements EmployeeDAO {
-
+public class CityDaoImpl implements CityDAO {
     @Override
-    public List<Employee> getAllEmployee() {
+    public List<City> getAllCities() {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM Employee").list();
+            return session.createQuery("FROM City").list();
         }
     }
 
     @Override
-    public Employee getById(int id) {
+    public City getById(int id) {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
-            return session.get(Employee.class, id);
+            return session.get(City.class, id);
         }
     }
 
     @Override
-    public void addEmployee(Employee employee) {
+    public void addCity(City city) {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.persist(employee);
+            session.persist(city);
             transaction.commit();
         }
     }
 
     @Override
-    public void updateEmployee(int id, Employee employee) {
-        if (isContainsId(id)) {
+    public void updateCity(int id, City city) {
+        if (isContainsIdCity(id)) {
             try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
                 Transaction transaction = session.beginTransaction();
-                session.update(employee);
+                session.update(city);
                 transaction.commit();
             }
         } else {
-            System.out.println("cant update id " + id + " (Employee no found)");
+            System.out.println("cant update id " + id + " (City no found)");
         }
     }
 
     @Override
-    public void deleteEmployee(int id) {
-        if (isContainsId(id)) {
+    public void deleteCity(int id) {
+        if (isContainsIdCity(id)) {
             try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
                 session.delete(getById(id));
             }
         } else {
-            System.out.println("cant delete id " + id + " (Employee no found)");
+            System.out.println("cant delete id " + id + " (City no found)");
         }
     }
 
     @Override
-    public boolean isContainsId(int id) {
+    public boolean isContainsIdCity(int id) {
         int count = 0;
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
-            count = (int) session.createQuery("SELECT count (*) FROM Employee e WHERE e.id= :id").stream().count();
+            count = (int) session.createQuery("SELECT count (*) FROM City c WHERE c.cityId= :id").stream().count();
         }
         if (count >= 1) {
             return true;
