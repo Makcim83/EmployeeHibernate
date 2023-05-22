@@ -7,13 +7,11 @@ import java.util.List;
 public interface CityDAO {
     List<City> getAllCities();
 
-    City getById(int id);
+    City getCityById(Long id);
 
     void addCity(City city);
 
-    void updateCity(int id, City city);
+    void updateCity(Long id, City city);
 
-    void deleteCity (int id);
-
-    boolean isContainsIdCity (int id);
+    void deleteCity(Long id);
 }

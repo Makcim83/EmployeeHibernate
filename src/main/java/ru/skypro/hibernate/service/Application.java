@@ -6,18 +6,14 @@ public class Application {
         CityDAO cityDao = new CityDaoImpl();
 
         System.out.println(((EmployeeDaoImpl) employeeDao).getAllEmployee());
-
         System.out.println(((CityDaoImpl) cityDao).getAllCities());
 
-
 //        employeeDao.addEmployee(new Employee("Ivan", "Ivanov", "male", 59, new City("Moscow")));
-//        cityDao.addCity(new City("Moscow"));
+//        cityDao.addCity(new City("SomeCity"));
 
-//        employeeDao.updateEmployee(, new Employee("Ivan", "Ivanov", "male", 59, new City("Moscow")));
+//        employeeDao.updateEmployee(11L, new Employee(11L, "Ivan", "Ivanov", "male", 47, new City("Kazan")));
 
-//        employeeDao.deleteEmployee(12);
-//        cityDao.deleteCity(10);
-
-
+        cityDao.deleteCity(16L);
+        employeeDao.deleteEmployee(14L);
     }
 }

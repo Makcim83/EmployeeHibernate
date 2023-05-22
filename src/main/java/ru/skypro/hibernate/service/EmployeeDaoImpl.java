@@ -16,7 +16,7 @@ public class EmployeeDaoImpl implements EmployeeDAO {
     }
 
     @Override
-    public Employee getById(int id) {
+    public Employee getEmployeeById(Long id) {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
             return session.get(Employee.class, id);
         }
@@ -32,39 +32,24 @@ public class EmployeeDaoImpl implements EmployeeDAO {
     }
 
     @Override
-    public void updateEmployee(int id, Employee employee) {
-        if (isContainsId(id)) {
+    public void updateEmployee(Long id, Employee empl) {
+        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.update(empl);
+            transaction.commit();
+        }
+    }
+
+    @Override
+    public void deleteEmployee(Long id) {
+        if (id == null) {
+            System.out.println("cant delete id " + id + " (City no found, null)");
+        } else {
             try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
                 Transaction transaction = session.beginTransaction();
-                session.update(employee);
+                session.delete(getEmployeeById(id));
                 transaction.commit();
             }
-        } else {
-            System.out.println("cant update id " + id + " (Employee no found)");
-        }
-    }
-
-    @Override
-    public void deleteEmployee(int id) {
-        if (isContainsId(id)) {
-            try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
-                session.delete(getById(id));
-            }
-        } else {
-            System.out.println("cant delete id " + id + " (Employee no found)");
-        }
-    }
-
-    @Override
-    public boolean isContainsId(int id) {
-        int count = 0;
-        try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
-            count = (int) session.createQuery("SELECT count (*) FROM Employee e WHERE e.id= :id").stream().count();
-        }
-        if (count >= 1) {
-            return true;
-        } else {
-            return false;
         }
     }
 }
