@@ -7,13 +7,11 @@ import java.util.List;
 interface EmployeeDAO {
     List<Employee> getAllEmployee();
 
-    Employee getById(int id);
+    Employee getEmployeeById(Long id);
 
     void addEmployee(Employee employee);
 
-    void updateEmployee(int id, Employee employee);
+    void updateEmployee(Long id, Employee employee);
 
-    void deleteEmployee(int id);
-
-    boolean isContainsId (int id);
+    void deleteEmployee(Long id);
 }

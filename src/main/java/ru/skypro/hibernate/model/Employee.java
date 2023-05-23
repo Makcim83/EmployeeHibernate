@@ -1,34 +1,34 @@
 package ru.skypro.hibernate.model;
 
-
 import lombok.*;
+
 import javax.persistence.*;
 
-@org.hibernate.annotations.NamedQueries({
-        @org.hibernate.annotations.NamedQuery(name = "Employee_all",
-                query = "from Employee")
-})
 @NoArgsConstructor
-@Data
-@EqualsAndHashCode (of = "id")
+@AllArgsConstructor
+@Setter
+@Getter
+@EqualsAndHashCode(of = "id")
+@Builder
 @Entity
-@Table (name = "employee")
+@Table(name = "employee")
 public class Employee {
     @Id
-    @Column (name = "id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column (name = "first_name", length = 50, nullable = false)
+    @Column(name = "first_name", length = 50, nullable = false)
     private String firstName;
-    @Column (name = "last_name", length = 50, nullable = false)
+    @Column(name = "last_name", length = 50, nullable = false)
     private String lastName;
-    @Column (name = "gender", length = 6, nullable = false)
+    @Column(name = "gender", length = 6, nullable = false)
     private String gender;
-    @Column (name = "age", nullable = false)
+    @Column(name = "age", nullable = false)
     private int age;
-    @ManyToOne (cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    @JoinColumn (name = "city_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "city_id")
     private City city;
+
     public Employee(String firstName, String lastName, String gender, int age, City city) {
         this.firstName = firstName;
         this.lastName = lastName;

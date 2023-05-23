@@ -2,52 +2,56 @@ package ru.skypro.hibernate.service;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import ru.skypro.hibernate.model.Employee;
+import ru.skypro.hibernate.model.City;
 
 import java.util.List;
 
-public class EmployeeDaoImpl implements EmployeeDAO {
-
+public class CityDaoImpl implements CityDAO {
     @Override
-    public List<Employee> getAllEmployee() {
+    public List<City> getAllCities() {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM Employee").list();
+            return session.createQuery("FROM City ").list();
         }
     }
 
     @Override
-    public Employee getEmployeeById(Long id) {
+    public City getCityById(Long id) {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
-            return session.get(Employee.class, id);
+            return (City) session.get(City.class, id);
+        } catch (NullPointerException e) {
+            System.out.println("City id = " + id + " no found");
+            return null;
         }
     }
 
     @Override
-    public void addEmployee(Employee employee) {
+    public void addCity(City city) {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.persist(employee);
+            session.persist(city);
             transaction.commit();
         }
     }
 
     @Override
-    public void updateEmployee(Long id, Employee empl) {
+    public void updateCity(Long id, City city) {
         try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.update(empl);
+            session.merge(city);
             transaction.commit();
+        } catch (NullPointerException e) {
+            System.out.println("cant update id " + id + " (City no found)");
         }
     }
 
     @Override
-    public void deleteEmployee(Long id) {
+    public void deleteCity(Long id) {
         if (id == null) {
             System.out.println("cant delete id " + id + " (City no found, null)");
         } else {
             try (Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession()) {
                 Transaction transaction = session.beginTransaction();
-                session.delete(getEmployeeById(id));
+                session.delete(getCityById(id));
                 transaction.commit();
             }
         }
